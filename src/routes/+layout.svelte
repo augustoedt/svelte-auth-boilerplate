@@ -15,10 +15,12 @@
 </div>
 
 <style>
-	nav > ul {
-		display: flex;
+	:global(body) {
 		font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
 			sans-serif;
+	}
+	nav > ul {
+		display: flex;
 		font-weight: 700;
 		list-style: none;
 		padding: 0;

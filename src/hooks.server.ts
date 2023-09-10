@@ -6,14 +6,14 @@ export const handle = (async ({ event, resolve }) => {
 
 	event.locals.m = m;
 
-	event.locals.m.auth.loadFromCookies(headers.get('cookie') ?? '');
+	event.locals.m.auth.loadFromCookies(headers.get('cookie'));
 
 	const isValid = await event.locals.m.session.isValidSession();
 
-	if (isValid == null) {
-		event.locals.m.auth.logout(event.cookies);
-	} else {
+	if (isValid) {
 		event.locals.user = event.locals.m.session;
+	} else {
+		event.locals.m.auth.logout();
 	}
 
 	const response = await resolve(event);
