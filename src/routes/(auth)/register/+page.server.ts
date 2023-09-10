@@ -1,11 +1,31 @@
 import type { Actions } from './$types';
 
 export const actions = {
-	register: async (event) => {
+	default: async (event) => {
 		const data = Object.fromEntries(await event.request.formData()) as unknown as {
 			email: string;
+			name: string;
 			password: string;
+			confirmPassword: string;
 		};
+
+		if (!data.email || !data.name || !data.password || !data.confirmPassword) {
+			return {
+				status: 400,
+				body: {
+					error: 'Invalid request'
+				}
+			};
+		}
+
+		if (data.password !== data.confirmPassword) {
+			return {
+				status: 400,
+				body: {
+					error: 'Passwords do not match'
+				}
+			};
+		}
 
 		const response = await event.locals.m.auth.register(data.email, data.password);
 
