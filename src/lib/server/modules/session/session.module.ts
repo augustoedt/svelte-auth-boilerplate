@@ -1,29 +1,32 @@
 export interface ISession {
-    getToken: () => string;
-    setSession: (token: string) => void;
-    getSession: () => string;
-    clearSession: () => void;
-    isValidSession: () => boolean;
+	baseUrl: string;
+	getToken: () => string;
+	setSession: (token: string) => void;
+	getSession: () => string;
+	clearSession: () => void;
+	isValidSession: () => boolean;
 }
 
 export class Session implements ISession {
-    getToken(): string {
-        return '';
-    }
+	constructor(public baseUrl: string) {}
 
-    setSession(token: string): void {
-        console.log('setSession', token);
-    }
+	getToken(): string {
+		return '';
+	}
 
-    getSession(): string {
-        return '';
-    }
+	setSession(token: string): void {
+		console.log('setSession', token);
+	}
 
-    clearSession(): void {
-        console.log('clearSession');
-    }
+	getSession(): string {
+		return '';
+	}
 
-    isValidSession(): boolean {
-        return false;
-    }
+	clearSession(): void {
+		console.log('clearSession');
+	}
+
+	isValidSession(): boolean {
+		return false;
+	}
 }

@@ -1,23 +1,24 @@
+import { CoreModule } from '../core/core.module';
 import type { ISession } from '../session/session.module';
 
 export interface IAuthentication {
 	session: ISession;
-	login: (email: string, password: string) => Promise<any>;
+	login: (email: string, password: string) => Promise<Response>;
 	logout: () => Promise<any>;
 	register: (email: string, password: string) => Promise<any>;
-	resetPassword: (email: string) => Promise<any>;
-	loadFromCookies: () => Promise<any>;
+	loadFromCookies: (cookie: string | null) => Promise<void>;
 }
 
-export class Authentication implements IAuthentication {
+export class Authentication extends CoreModule implements IAuthentication {
 	session: ISession;
 
 	constructor(session: ISession) {
+		super(session.baseUrl);
 		this.session = session;
 	}
 
-	login(email: string, password: string): Promise<any> {
-		return Promise.resolve();
+	login(email: string, password: string): Promise<Response> {
+		return this.post('/api/auth/login', { email, password });
 	}
 
 	logout(): Promise<any> {
@@ -25,10 +26,6 @@ export class Authentication implements IAuthentication {
 	}
 
 	register(email: string, password: string): Promise<any> {
-		return Promise.resolve();
-	}
-
-	resetPassword(email: string): Promise<any> {
 		return Promise.resolve();
 	}
 

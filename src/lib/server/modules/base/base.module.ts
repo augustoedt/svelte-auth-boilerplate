@@ -1,17 +1,27 @@
-import { Authentication, type IAuthentication } from "../authentication/authentication.module";
-import { Session, type ISession } from "../session/session.module";
-import { User, type IUser } from "../user/user.module";
+import { Authentication, type IAuthentication } from '../authentication/authentication.module';
+import { Session, type ISession } from '../session/session.module';
+import { User, type IUser } from '../user/user.module';
 
 export class BaseModule {
-    auth: IAuthentication;
-    session: ISession;
-    user: IUser;
+	private __auth: IAuthentication;
+	private __session: ISession;
+	private __user: IUser;
 
-    constructor() {
-        this.session = new Session();
-        this.auth = new Authentication(this.session);
-        this.user = new User(this.session);
-    }
+	constructor(baseUrl: string) {
+		this.__session = new Session(baseUrl);
+		this.__auth = new Authentication(this.session);
+		this.__user = new User(this.session);
+	}
 
+	get auth(): IAuthentication {
+		return this.__auth;
+	}
 
+	get user(): IUser {
+		return this.__user;
+	}
+
+	get session(): ISession {
+		return this.__session;
+	}
 }
