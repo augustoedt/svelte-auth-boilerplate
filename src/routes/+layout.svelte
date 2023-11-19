@@ -1,5 +1,5 @@
 <div>
-	<nav class="">
+	<nav aria-label="layout-navbar">
 		<ul>
 			<li><a href="/">Home</a></li>
 		</ul>

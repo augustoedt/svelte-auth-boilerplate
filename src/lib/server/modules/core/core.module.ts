@@ -29,7 +29,7 @@ export class CoreModule implements HttpClient, ICoreModule {
 
 	async post(
 		url: string,
-		input: Record<string, unknown>,
+		input: Record<string, any>,
 		headers?: Record<string, string>
 	): Promise<Response> {
 		return await fetch(`${this.baseUrl}${url}`, {

@@ -1,3 +1,4 @@
+import type { RegisterInput } from '$lib/dtos/users.dto';
 import { CoreModule } from '../core/core.module';
 import type { ISession } from '../session/session.module';
 
@@ -5,7 +6,7 @@ export interface IAuthentication {
 	session: ISession;
 	login: (email: string, password: string) => Promise<Response | null>;
 	logout: () => Promise<any>;
-	register: (email: string, password: string) => Promise<any>;
+	register: (input: RegisterInput) => Promise<Response | null>;
 	loadFromCookies: (cookie: string | null) => Promise<void>;
 }
 
@@ -19,7 +20,7 @@ export class Authentication extends CoreModule implements IAuthentication {
 
 	async login(email: string, password: string): Promise<Response | null> {
 		try {
-			return await this.post('/api/auth/login', { email, password });
+			return await this.post('/login', { email, password });
 		} catch (error) {
 			// console.error(error);
 			return null;
@@ -30,8 +31,12 @@ export class Authentication extends CoreModule implements IAuthentication {
 		return Promise.resolve();
 	}
 
-	register(email: string, password: string): Promise<any> {
-		return this.post('/api/auth/register', { email, password });
+	async register(input: RegisterInput): Promise<Response | null> {
+		try {
+			return await this.post('/users', input);
+		} catch (error) {
+			return null;
+		}
 	}
 
 	loadFromCookies(): Promise<any> {

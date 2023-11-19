@@ -1,43 +1,66 @@
 import type { Actions } from './$types';
 
+function delay(ms: number) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export const actions = {
 	default: async (event) => {
-		const data = Object.fromEntries(await event.request.formData()) as unknown as {
+		const r = Object.fromEntries(await event.request.formData()) as unknown as {
 			email: string;
 			name: string;
 			password: string;
 			confirmPassword: string;
 		};
 
-		if (!data.email || !data.name || !data.password || !data.confirmPassword) {
+		const { confirmPassword, ...registerData } = r;
+
+		if (!registerData.email || !registerData.name || !registerData.password || !confirmPassword) {
 			return {
 				status: 400,
 				body: {
-					error: 'Invalid request'
+					error: 'Invalid request',
+					data: registerData
 				}
 			};
 		}
 
-		if (data.password !== data.confirmPassword) {
+		if (registerData.password !== confirmPassword) {
 			return {
 				status: 400,
 				body: {
-					error: 'Passwords do not match'
+					error: 'Passwords do not match',
+					data: registerData
 				}
 			};
 		}
 
-		const response = await event.locals.m.auth.register(data.email, data.password);
+		await delay(5000);
 
-		if (response.status !== 200) {
+		const response = await event.locals.m.auth.register(registerData);
+
+		if (!response) {
+			return {
+				status: 500,
+				body: {
+					error: 'Internal server error',
+					data: registerData
+				}
+			};
+		}
+
+		if (response.status !== 201) {
 			return {
 				status: response.status,
 				body: {
-					error: 'Invalid login'
+					error: 'Invalid login',
+					data: registerData
 				}
 			};
 		}
 
-		return { success: true };
+		const { data } = await response.json();
+
+		return { success: true, data };
 	}
 } satisfies Actions;
