@@ -1,14 +1,17 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import type { ActionData, SubmitFunction } from './$types';
+	import type {
+		ActionData,
+		SubmitFunction
+	} from './$types';
 
 	export let form: ActionData;
 
 	let inputform = {
-		email: 'augustoedt@gmail.com',
-		name: 'Augusto Eduardo',
-		password: 'fulano',
-		confirmPassword: 'fulano'
+		email: 'test@test.com',
+		name: 'test user',
+		password: '123456',
+		confirmPassword: '123456'
 	};
 
 	let submitting = false;
@@ -28,10 +31,15 @@
 <article>
 	<fieldset>
 		<legend><h1>Register</h1></legend>
-		<form action="register" method="post" use:enhance={onSubmit}>
-			<label 
+		<form
+			action="register"
+			method="post"
+			use:enhance={onSubmit}
+		>
+			<label
 				>Email
 				<input
+					id="email"
 					type="email"
 					name="email"
 					placeholder="Email"
@@ -41,21 +49,29 @@
 			<label
 				>Nome
 				<input
+					id="name"
 					type="text"
 					name="name"
 					placeholder="Name"
 					value={inputform.name ?? form?.data.name}
 				/>
 			</label>
-			<label 
+			<label
 				>Password
 
-				<input type="password" name="password" placeholder="Password" value={inputform.password} />
+				<input
+					id="password"
+					type="password"
+					name="password"
+					placeholder="Password"
+					value={inputform.password}
+				/>
 			</label>
 			<label
 				>Confirm Password
 
 				<input
+					id="confirmPassword"
 					type="password"
 					name="confirmPassword"
 					placeholder="Confirm Password"
@@ -69,11 +85,17 @@
 
 	<div>
 		{#if submitting}
-			<p class="waitting-message alert-box">Submitting...</p>
+			<p class="waitting-message alert-box">
+				Submitting...
+			</p>
 		{:else if !submitting && form?.success}
-			<p class="success-message alert-box">Usuário criado com sucesso!</p>
+			<p class="success-message alert-box">
+				Usuário criado com sucesso!
+			</p>
 		{:else if form?.body && form.body.error}
-			<p class="error-message alert-box">{form.body.error}</p>
+			<p class="error-message alert-box">
+				{form.body.error}
+			</p>
 		{/if}
 	</div>
 </article>

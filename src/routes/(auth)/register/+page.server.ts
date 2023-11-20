@@ -15,7 +15,12 @@ export const actions = {
 
 		const { confirmPassword, ...registerData } = r;
 
-		if (!registerData.email || !registerData.name || !registerData.password || !confirmPassword) {
+		if (
+			!registerData.email ||
+			!registerData.name ||
+			!registerData.password ||
+			!confirmPassword
+		) {
 			return {
 				status: 400,
 				body: {
@@ -35,8 +40,6 @@ export const actions = {
 			};
 		}
 
-		await delay(5000);
-
 		const response = await event.locals.m.auth.register(registerData);
 
 		if (!response) {
@@ -50,10 +53,11 @@ export const actions = {
 		}
 
 		if (response.status !== 201) {
+			const { message } = await response.json();
 			return {
 				status: response.status,
 				body: {
-					error: 'Invalid login',
+					error: message,
 					data: registerData
 				}
 			};
