@@ -20,9 +20,9 @@ export class Authentication extends CoreModule implements IAuthentication {
 
 	async login(email: string, password: string): Promise<Response | null> {
 		try {
-			return await this.post('/login', { email, password });
+			return await this.post('/users/login', { email, password });
 		} catch (error) {
-			// console.error(error);
+			console.error(error);
 			return null;
 		}
 	}
@@ -35,6 +35,7 @@ export class Authentication extends CoreModule implements IAuthentication {
 		try {
 			return await this.post('/users', input);
 		} catch (error) {
+			console.log(error);
 			return null;
 		}
 	}

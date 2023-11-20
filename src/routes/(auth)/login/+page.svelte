@@ -2,20 +2,37 @@
 	import type { ActionData } from './$types';
 
 	export let form: ActionData;
+
+	let formData = {
+		email: 'test@test.com',
+		password: '123456'
+	};
 </script>
 
 <article>
 	<fieldset>
 		<legend><h1>Login</h1></legend>
 		<form action="login" method="post">
-			<label for="username"
+			<label for="email"
 				>Email
 
-				<input type="email" name="email" placeholder="Email" />
+				<input
+					id="email"
+					type="email"
+					name="email"
+					placeholder="Email"
+					value={formData.email}
+				/>
 			</label>
 			<label for="password"
 				>Password
-				<input type="password" name="password" placeholder="Password" />
+				<input
+					id="password"
+					type="password"
+					name="password"
+					placeholder="Password"
+					value={formData.password}
+				/>
 			</label>
 			{#if form?.status === 'error'}
 				<span>{form.message}</span>
